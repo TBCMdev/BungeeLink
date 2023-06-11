@@ -1,5 +1,6 @@
 package tbcm.bungeelink.server;
 
+import net.md_5.bungee.api.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.DataInputStream;
@@ -9,15 +10,21 @@ import java.net.Socket;
 import java.util.HashMap;
 
 public class SpigotCommunicator {
+
+    public static Plugin instance;
+
     public static final int SERVER_PORT = 10000;
 
     public HashMap<String, SpigotClient> clients = new HashMap<>();
 
     public Thread mainThread;
 
-    public SpigotCommunicator() throws IOException {
+    public SpigotCommunicator(Plugin plugin) throws IOException {
+
+        instance = plugin;
+
         ServerSocket socket = new ServerSocket(SERVER_PORT);
-        BungeeCord.instance.getLogger().info("[NOTICE] server is alive and listening.");
+        instance.getLogger().info("[NOTICE] BungeeLink server is alive and listening.");
         boolean active = true;
 
         mainThread = new Thread(() -> {
@@ -33,13 +40,13 @@ public class SpigotCommunicator {
                 int type = stream.readInt();
                 int state = stream.readInt();
                 int max_players = stream.readInt();
-                Mainhub.instance.getLogger().info("[NEW CLIENT]: " + s_name);
+                instance.getLogger().info("[NEW CLIENT]: " + s_name);
                 SpigotClient c = new SpigotClient(s_name, pID, type, max_players, stream, client);
                 c.onDestroySocket(this::destroyConnection);
                 clients.put(s_name, c);
 
             } catch (IOException e) {
-                Mainhub.instance.getLogger().info("[IOException in listener thread]: ");
+                instance.getLogger().info("[IOException in listener thread]: ");
                 e.printStackTrace();
                 //active = false;
             }
@@ -47,10 +54,15 @@ public class SpigotCommunicator {
         });
         mainThread.start();
     }
+    public void stop(){
+        for(SpigotClient client : clients.values()) destroyConnection(client);
+
+        instance.getLogger().info("BungeeLink server disabled.");
+    }
     public boolean destroyConnection(SpigotClient client)  {
         try {
             client.self.close();
-            Mainhub.instance.getLogger().info(client.getName() + "'s connection has been destroyed.");
+            instance.getLogger().info(client.getName() + "'s connection has been destroyed.");
             clients.remove(client.getName());
             return true;
         } catch (IOException e) {

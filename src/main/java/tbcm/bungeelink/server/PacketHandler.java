@@ -19,7 +19,7 @@ public class PacketHandler {
             case P_SET_MAX_PLAYERS -> c.serverData.setMaxPlayerCount(rest.readInt());
             case P_SET_SERVER_TYPE -> c.serverData.setServerType(rest.readInt());
             case P_DESTROY_CONNECTION -> c.destroy();
-            default -> Mainhub.instance.getLogger().info("[UNKNOWN PACKET (with id: " + pID + ")]: " + c.serverData.getServerName());
+            default -> SpigotCommunicator.instance.getLogger().info("[UNKNOWN PACKET (with id: " + pID + ")]: " + c.serverData.getServerName());
         }
     }
 }

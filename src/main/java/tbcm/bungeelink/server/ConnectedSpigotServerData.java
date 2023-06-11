@@ -20,7 +20,7 @@ public class ConnectedSpigotServerData {
 
     private void debug(String info, Object change){
 
-        getLogger().info("[SPIGOT SERVER:" + s_identifier + "]: updated " + info + " to: " + change);
+        SpigotCommunicator.instance.getLogger().info("[SPIGOT SERVER:" + s_identifier + "]: updated " + info + " to: " + change);
     }
     public void setServerType(int t){
         type = SERVER_TYPE.values()[t];

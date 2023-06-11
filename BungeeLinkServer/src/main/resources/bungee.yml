@@ -1,3 +1,0 @@
-name: Bungeelink
-version: '${project.version}'
-main: tbcm.bungeelink.Bungeelink

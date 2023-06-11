@@ -23,7 +23,6 @@ public class SpigotClient extends Thread{
     private Consumer<SpigotClient> onDestroySocketCallable;
     public SpigotClient(String s_name, int state, final int type, int max_players, DataInputStream stream, Socket self) throws IOException {
         this.in = stream;
-
         serverData.setServerName(s_name);
 
         serverData.setState(state);
