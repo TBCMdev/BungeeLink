@@ -1,0 +1,6 @@
+name: Bungeelink
+version: '${project.version}'
+main: tbcm.bungeelink.Bungeelink
+api-version: 1.20
+authors: [ TBCM ]
+description: A Java Spigot API designed to create a secure communication between your spigot servers and the BungeeCord host instance.
